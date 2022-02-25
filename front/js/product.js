@@ -47,11 +47,21 @@ function appendData(data){
             quantiteProduit: quantite.value
             }
         console.log(optionsProduit);
-    });
-
 //LOCAL STORAGE 
 
-
+        let produitsDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
+        let ajoutProduitsDansLocalStorage = () => {
+            produitsDansLocalStorage.push(optionsProduit);
+            localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
+        }
+        if (produitsDansLocalStorage){
+            ajoutProduitsDansLocalStorage ();
+        }
+        else {
+            produitsDansLocalStorage = [];
+            ajoutProduitsDansLocalStorage ();
+        }
+        });
 }
 
 
