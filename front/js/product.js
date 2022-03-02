@@ -1,24 +1,24 @@
 //ON RECUPERE L'ID PRODUIT VIA L'URL AVEC SEARCHPARAMS
 
-let params = new URL (document.location).searchParams;
+let params = new URL(document.location).searchParams;
 let id = params.get("id");
 
 //ON RECUPERE LES INFOS API AVEC FETCH
 
 fetch(`http://localhost:3000/api/products/${id}`)
-  .then(function (response) {
-      return response.json();
-  })
-  .then(function (data) {
-      appendData(data);
-  })
-  .catch(function (err) {
-      console.log('error: ' + err);
-  });
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        appendData(data);
+    })
+    .catch(function (err) {
+        console.log('error: ' + err);
+    });
 
 //ON INSERE LES INFOS PRODUITS DANS LE HTML
 
-function appendData(data){
+function appendData(data) {
     document.querySelector('.item__img img').src = data.imageUrl;
     document.getElementById('title').innerHTML = data.name;
     document.getElementById('price').innerHTML = data.price;
@@ -29,13 +29,13 @@ function appendData(data){
         option.value = data.colors[i];
         option.innerHTML = data.colors[i];
         colorsContainer.appendChild(option);
-    } 
+    }
 
-//AJOUT PANIER QUAND ON CLIQUE SUR LE BOUTON
+    //AJOUT PANIER QUAND ON CLIQUE SUR LE BOUTON
 
     var ajouterPanier = document.getElementById('addToCart');
     var quantite = document.getElementById('quantity');
-    ajouterPanier.addEventListener("click", (event)=>{
+    ajouterPanier.addEventListener("click", (event) => {
         event.preventDefault();
 
         var colorsValue = colorsContainer.value;
@@ -44,24 +44,25 @@ function appendData(data){
             nomProduit: data.name,
             prixProduit: data.price,
             couleurProduit: colorsValue,
-            quantiteProduit: quantite.value
-            }
-        console.log(optionsProduit);
-//LOCAL STORAGE 
+            quantiteProduit: quantite.value,
+            imgProduit: data.imageUrl
+        }
+
+        //LOCAL STORAGE 
 
         let produitsDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
         let ajoutProduitsDansLocalStorage = () => {
             produitsDansLocalStorage.push(optionsProduit);
             localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
         }
-        if (produitsDansLocalStorage){
-            ajoutProduitsDansLocalStorage ();
+        if (produitsDansLocalStorage) {
+            ajoutProduitsDansLocalStorage();
         }
         else {
             produitsDansLocalStorage = [];
-            ajoutProduitsDansLocalStorage ();
+            ajoutProduitsDansLocalStorage();
         }
-        });
+    });
 }
 
 
