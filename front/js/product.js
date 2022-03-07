@@ -14,6 +14,13 @@ fetch(`http://localhost:3000/api/products/${id}`)
     })
     .catch(function (err) {
         console.log('error: ' + err);
+        document.querySelector('.item__img img').style.display = 'none';
+        document.getElementById('title').innerHTML = "404 error, la connexion avec le serveur a échoué";
+        document.getElementById('price').style.display = 'none';
+        document.getElementById('description').style.display = 'none';
+        document.getElementById('colors').style.display = 'none';
+        document.getElementById('quantity').style.display = 'none';
+        document.getElementById('addToCart').style.display = 'none';
     });
 
 //ON INSERE LES INFOS PRODUITS DANS LE HTML

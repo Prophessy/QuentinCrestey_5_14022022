@@ -53,19 +53,90 @@ function getTotalPrice() {
     return total;
 }
 
+//Changer la quantité de manière dynamique dans le panier
+
+var quantityInputs = document.getElementsByClassName('itemQuantity');
+for (var i = 0; i < quantityInputs.length; i++) {
+  var input = quantityInputs[i];
+  input.addEventListener('change', quantityChanged);
+}
+
+function quantityChanged(event) {
+  var input = event.target
+  if (isNaN(input.value) || input.value <= 0) {
+    input.value = 1
+  }
+  localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
+  getNumberProduct();
+  getTotalPrice();
+}
+
+console.log(quantityInputs);
+
 //Bouton supprimer du panier
 
 let boutonSupprimer = document.querySelectorAll('.deleteItem');
 
 for (let s = 0; s < boutonSupprimer.length; s++) {
-    boutonSupprimer[s].addEventListener("click", (event) => {
-        event.preventDefault();
+    boutonSupprimer[s].addEventListener("click", () => {
 
         let selectionnerIdPourSuppression = produitsDansLocalStorage[s].idProduit;
-        let selectionnerCouleursPourSuppression = produitsDansLocalStorage[s].couleurProduit;
+        let selectionnerCouleurPourSuppression = produitsDansLocalStorage[s].couleurProduit;
 
-        produitsDansLocalStorage = produitsDansLocalStorage.filter(element => element.idProduit !== selectionnerIdPourSuppression);
+        produitsDansLocalStorage = produitsDansLocalStorage.filter(element => element.idProduit !== selectionnerIdPourSuppression && element.couleurProduit !== selectionnerCouleurPourSuppression);
         localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
 
     })
 }
+
+//let boutonSupprimer = document.querySelectorAll('.deleteItem');
+
+//for (let s = 0; s < boutonSupprimer.length; s++) {
+  //boutonSupprimer[s].addEventListener("click", function(event) {
+    //var boutonClick = event.target
+    //boutonClick.parentElement.parentElement.parentElement.parentElement.remove()
+
+  //})
+//}
+
+//Regex 
+
+function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
+  {
+    return (true)
+  }
+    alert("You have entered an invalid email address!")
+    return (false)
+}
+//Verification que le formulaire est correct avec regex 
+
+//Formulaire d'envoi 
+
+let firstNameSelection = document.getElementById('firstName');
+let lastNameSelection = document.getElementById('lastName');
+let addressSelection = document.getElementById('address');
+let citySelection = document.getElementById('city');
+let emailSelection = document.getElementById('email');
+
+
+let commander = document.getElementById('order')
+commander.addEventListener("click", () => {
+  
+  const contact = {
+    firstName: firstNameSelection.value,
+    lastName: lastNameSelection.value,
+    address: addressSelection.value,
+    city: citySelection.value,
+    email: emailSelection.value
+  }
+
+  const promise = fetch("http://localhost:3000/api", {
+  method: "POST",
+  body: JSON.stringify(contact),
+  headers: {
+    "Content-Type": "application/json",
+  }
+})
+});
