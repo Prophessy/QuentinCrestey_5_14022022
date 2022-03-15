@@ -56,11 +56,18 @@ function appendData(data) {
         }
 
         //LOCAL STORAGE 
-
         let produitsDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
         let ajoutProduitsDansLocalStorage = () => {
+            let idEtCouleurDansLocalStorage = produitsDansLocalStorage.find(element => element.idProduit === optionsProduit.idProduit && element.couleurProduit === colorsValue);
+            if (idEtCouleurDansLocalStorage) {
+                let newQuantite = parseInt(optionsProduit.quantiteProduit) + parseInt(idEtCouleurDansLocalStorage.quantiteProduit);
+                idEtCouleurDansLocalStorage.quantiteProduit = newQuantite;
+                localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
+            }
+             else {
             produitsDansLocalStorage.push(optionsProduit);
             localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
+            }
         }
         if (produitsDansLocalStorage) {
             ajoutProduitsDansLocalStorage();
