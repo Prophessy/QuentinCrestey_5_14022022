@@ -23,7 +23,7 @@ else {
                     <div class="cart__item__content__settings">
                       <div class="cart__item__content__settings__quantity">
                         <p>Qté : </p>
-                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${produitsDansLocalStorage[i].quantiteProduit}">
+                        <input type="number" class="itemQuantity" id="${produitsDansLocalStorage[i].idProduit}" name="itemQuantity" min="1" max="100" value="${produitsDansLocalStorage[i].quantiteProduit}">
                       </div>
                       <div class="cart__item__content__settings__delete">
                         <p class="deleteItem">Supprimer</p>
@@ -61,25 +61,24 @@ function getTotalPrice() {
 //Changer la quantité de manière dynamique dans le panier
 
 function modifyQtt() {
-  let qttModif = document.querySelectorAll(".itemQuantity");
-
-  for (let k = 0; k < qttModif.length; k++){
-      qttModif[k].addEventListener("change" , (event) => {
+  let quantiteDeLaDiv = document.querySelectorAll(".itemQuantity");
+  
+  for (let i = 0; i < quantiteDeLaDiv.length; i++){
+    quantiteDeLaDiv[i].addEventListener("change" , (event) => {
           event.preventDefault();
 
           //Selection de l'element à modifier en fonction de son id ET sa couleur
-          let quantityModif = produitsDansLocalStorage[k].quantiteProduit;
-          let qttModifValue = qttModif[k].valueAsNumber;
+          let valueDeQuantiteDeLaDiv = quantiteDeLaDiv[i].value;
           
-          const resultFind = produitsDansLocalStorage.find((el) => el.qttModifValue !== quantityModif);
+          const resultFind = produitsDansLocalStorage.find((el) => el.idProduit == event.target.id);
 
-          resultFind.quantiteProduit = qttModifValue;
-          produitsDansLocalStorage[k].quantiteProduit = resultFind.quantiteProduit;
+          resultFind.quantiteProduit = valueDeQuantiteDeLaDiv;
+          produitsDansLocalStorage[i].quantiteProduit = resultFind.quantiteProduit;
 
           localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
-      
+        
           // refresh rapide
-          location.reload();
+        location.reload();
       })
   }
 }
