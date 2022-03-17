@@ -98,24 +98,12 @@ for (let s = 0; s < boutonSupprimer.length; s++) {
         localStorage.setItem("produit", JSON.stringify(produitsDansLocalStorage));
         
         boutonSupprimer[s].closest("article").remove();
+
+        location.reload();
     })
 }
 
-//Regex 
-
-function ValidateEmail(mail) 
-{
- if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
-  {
-    return (true)
-  }
-    alert("You have entered an invalid email address!")
-    return (false)
-}
-
-//Verification que le formulaire est correct avec regex 
-
-//Formulaire d'envoi 
+//Selection id form
 
 let firstNameSelection = document.getElementById('firstName');
 let lastNameSelection = document.getElementById('lastName');
@@ -123,12 +111,89 @@ let addressSelection = document.getElementById('address');
 let citySelection = document.getElementById('city');
 let emailSelection = document.getElementById('email');
 
+//Regex 
+
+function ValidateEmail() 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailSelection.value))
+  {
+    return (true)
+  }
+    alert("You have entered an invalid email address!")
+    return (false)
+}
+
+function ValidateAddress()
+{
+  if (/^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/.test(addressSelection.value))
+   {
+     return (true)
+   }
+     alert("You have entered an invalid address!")
+     return (false)
+ }
+
+ function ValidateFirstName()
+{
+  if (/^[a-zA-Z ,.'-]+$/.test(firstNameSelection.value))
+   {
+     return (true)
+   }
+     alert("You have entered an invalid first name!")
+     return (false)
+ }
+
+ function ValidateLastName()
+{
+  if (/^[a-zA-Z ,.'-]+$/.test(lastNameSelection.value))
+   {
+     return (true)
+   }
+     alert("You have entered an invalid last name!")
+     return (false)
+ }
+
+ function ValidateCity()
+{
+  if (/^[a-zA-Z ,.'-]+$/.test(citySelection.value))
+   {
+     return (true)
+   }
+     alert("You have entered an invalid city!")
+     return (false)
+ }
+ 
+
+//Validation avec regex
+
+emailSelection.addEventListener('change', function() {
+  ValidateEmail(this);
+});
+
+addressSelection.addEventListener('change', function() {
+  ValidateAddress(this);
+});
+
+firstNameSelection.addEventListener('change', function() {
+  ValidateFirstName(this);
+});
+
+lastNameSelection.addEventListener('change', function() {
+  ValidateLastName(this);
+});
+
+citySelection.addEventListener('change', function() {
+  ValidateCity(this);
+});
+
+//Formulaire d'envoi 
 
 let commander = document.getElementById('order')
 commander.addEventListener("click", (carotte) => {
 
   carotte.preventDefault();
 
+  if (ValidateEmail(emailSelection) && ValidateAddress(addressSelection) && ValidateFirstName(firstNameSelection) && ValidateLastName(lastNameSelection) && ValidateCity(citySelection)) {
   let idProduitFormulaire = [];
   for (let i = 0; i < produitsDansLocalStorage.length; i++) {
     idProduitFormulaire.push(produitsDansLocalStorage[i].idProduit);
@@ -166,4 +231,4 @@ fetch("http://localhost:3000/api/products/order", options)
 .catch((err) => {
     alert ("Problème avec fetch : " + err.message);
 });
-})
+}})
