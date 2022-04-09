@@ -44,7 +44,7 @@ function appendData(data) {
     var quantite = document.getElementById('quantity');
     ajouterPanier.addEventListener("click", (event) => {
         event.preventDefault();
-
+        if (quantite.value > 0 && quantite.value < 100) { 
         var colorsValue = colorsContainer.value;
         let optionsProduit = {
             idProduit: id,
@@ -59,6 +59,7 @@ function appendData(data) {
         let produitsDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
         let ajoutProduitsDansLocalStorage = () => {
             let idEtCouleurDansLocalStorage = produitsDansLocalStorage.find(element => element.idProduit === optionsProduit.idProduit && element.couleurProduit === colorsValue);
+            
             if (idEtCouleurDansLocalStorage) {
                 let newQuantite = parseInt(optionsProduit.quantiteProduit) + parseInt(idEtCouleurDansLocalStorage.quantiteProduit);
                 idEtCouleurDansLocalStorage.quantiteProduit = newQuantite;
@@ -76,8 +77,11 @@ function appendData(data) {
             produitsDansLocalStorage = [];
             ajoutProduitsDansLocalStorage();
         }
+    }
     });
 }
+
+
 
 
 
